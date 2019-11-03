@@ -1,0 +1,22 @@
+<mat-sidenav-container class="mrgeek-sidenav-container" fullscreen
+  [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary" class="mrgeek-toolbar">
+      <span>Environments Manager</span>
+      <span class="mrgeek-spacer"></span>
+
+      <button mat-icon-button aria-label="Add environment" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <mat-grid-list cols="4" rowHeight="5:5">
+      <mat-grid-tile *ngFor="let env of environments">
+        <app-environment-card [env]="env" (onRemove)="refreshEnvironments($event)"></app-environment-card>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,19 @@
+<mat-card class="mrgeek-card">
+  <mat-card-header>
+    <div mat-card-avatar class="mrgeek-header-image"></div>
+    <mat-card-title>{{ env.name }}</mat-card-title>
+    <mat-card-subtitle>{{ env.id }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ env.path }}</mat-card-subtitle>
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+    alt="Photo of a Shiba Inu"> -->
+  <mat-card-content>
+    <p>
+      {{ env.command }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="run()">RUN</button>
+    <button mat-button color="warn" (click)="remove()">REMOVE</button>
+  </mat-card-actions>
+</mat-card>
