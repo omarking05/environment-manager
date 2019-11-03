@@ -10,10 +10,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class EnvironmentCardComponent implements OnInit {
   @Input() env: EnvironmentModel;
-  @Output() onRemove: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onUpdate: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onRun: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onStop: EventEmitter<any> = new EventEmitter<any>();
+  @Output() remove: EventEmitter<any> = new EventEmitter<any>();
+  @Output() update: EventEmitter<any> = new EventEmitter<any>();
+  @Output() run: EventEmitter<any> = new EventEmitter<any>();
+  @Output() stop: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private databaseService: DatabaseService,
@@ -23,7 +23,7 @@ export class EnvironmentCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  run() {
+  _run() {
     const commandProcess = this.electronService.childProcess.exec(this.env.command, {
       cwd: this.env.path
     });
@@ -44,27 +44,28 @@ export class EnvironmentCardComponent implements OnInit {
     });
 
     commandProcess.on('close', function (code) {
-      if (code == 0)
+      if (code === 0) {
         console.log('child process complete.');
-      else
+      } else {
         console.log('child process exited with code ' + code);
+      }
     });
 
-    this.onRun.emit(this.env);
+    this.run.emit(this.env);
   }
 
-  stop() {
+  _stop() {
 
-    this.onStop.emit(this.env);
+    this.stop.emit(this.env);
   }
 
-  update() {
+  _update() {
 
-    this.onUpdate.emit(this.env);
+    this.update.emit(this.env);
   }
 
-  remove() {
+  _remove() {
     this.databaseService.removeEnvironment(this.env);
-    this.onRemove.emit(this.env);
+    this.remove.emit(this.env);
   }
 }

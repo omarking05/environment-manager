@@ -14,7 +14,7 @@
 
     <mat-grid-list cols="4" rowHeight="5:5">
       <mat-grid-tile *ngFor="let env of environments">
-        <app-environment-card [env]="env" (onRemove)="refreshEnvironments($event)"></app-environment-card>
+        <app-environment-card [env]="env" (remove)="refreshEnvironments($event)"></app-environment-card>
       </mat-grid-tile>
 
     </mat-grid-list>
