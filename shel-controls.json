@@ -1,0 +1,51 @@
+{
+    "child": {
+        "child1": {
+            "directory": "\/home\/mrgeek\/work\/projects\/todo-app-electron-angular",
+            "height": 165,
+            "profile": "2b7c4080-0ddd-46c5-8f23-563fd3ba789d",
+            "readOnly": false,
+            "synchronizedInput": true,
+            "type": "Terminal",
+            "uuid": "da8ef292-c1be-4f9c-afb8-f4249c7d64e9",
+            "width": 1920
+        },
+        "child2": {
+            "child1": {
+                "directory": "\/home\/mrgeek\/work\/projects\/todo-app-electron-angular",
+                "height": 422,
+                "profile": "2b7c4080-0ddd-46c5-8f23-563fd3ba789d",
+                "readOnly": false,
+                "synchronizedInput": true,
+                "type": "Terminal",
+                "uuid": "a93818ce-6810-47d6-a44a-c101cef63d33",
+                "width": 1920
+            },
+            "child2": {
+                "directory": "\/home\/mrgeek\/work\/projects\/todo-app-electron-angular",
+                "height": 421,
+                "profile": "2b7c4080-0ddd-46c5-8f23-563fd3ba789d",
+                "readOnly": false,
+                "synchronizedInput": true,
+                "type": "Terminal",
+                "uuid": "c437e883-00a5-4b44-a228-63c07121c0db",
+                "width": 1920
+            },
+            "orientation": 1,
+            "position": 41,
+            "ratio": 0.5,
+            "type": "Paned"
+        },
+        "orientation": 1,
+        "position": 16,
+        "ratio": 0.163366336633663373,
+        "type": "Paned"
+    },
+    "height": 1010,
+    "name": "Default",
+    "synchronizedInput": false,
+    "type": "Session",
+    "uuid": "72f578eb-bcc2-4b19-a275-d31e0eb1e107",
+    "version": "1.0",
+    "width": 1920
+}

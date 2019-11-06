@@ -1,3 +1,4 @@
+import { EnvironmentService } from './providers/environment.service';
 import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
@@ -72,7 +73,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, DatabaseService],
+  providers: [ElectronService, DatabaseService, EnvironmentService],
   bootstrap: [AppComponent],
   entryComponents: [
     AddEnvironmentDialogComponent

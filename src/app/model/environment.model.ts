@@ -3,4 +3,6 @@ export interface EnvironmentModel {
   name: string;
   path: string;
   command: string;
+  status: string;
+  pid: number;
 }
