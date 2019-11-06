@@ -11,6 +11,7 @@
 
   .mrgeek-env-last-n-lines{ 
     background-color: #5f5f5f;
+    overflow: auto;
     border-radius: 5%;
     padding: 1em;
     min-height: 215px;
@@ -20,11 +21,12 @@
   }
 
   code {
-    overflow-x: auto;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
+    height: auto;
+    max-height: 200px;
+    white-space: pre-line;
+    white-space: -moz-pre-line;
+    white-space: -pre-line;
+    white-space: -o-pre-line;
     word-wrap: break-word;
   }
 }

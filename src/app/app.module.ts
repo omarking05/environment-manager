@@ -16,6 +16,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
@@ -35,6 +37,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { AddEnvironmentDialogComponent } from './components/add-environment-dialog/add-environment-dialog.component';
 import { EnvironmentCardComponent } from './components/environment-card/environment-card.component';
 
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EnvironmentCardComponent
   ],
   imports: [
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatCardModule,

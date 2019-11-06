@@ -1,3 +1,4 @@
+import { SUBJECT_TYPE } from './../model/subject-type';
 import { ENVIRONMENT_DATA } from './../model/environment-data';
 import { arrayBufferToString, isActuallyKilled, forceKillProcess } from './../utils/helper.util';
 import { ENVIRONMENT_STATUS } from './../model/environment-status';
@@ -11,10 +12,24 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class EnvironmentService {
 
-  envChanged: Subject<EnvironmentModel>;
-  logChanged: Subject<any>;
+  subjectsPool = [];
 
   constructor(public electronService: ElectronService, public databaseService: DatabaseService) {
+  }
+
+  private generateSubjectKeyName(env: EnvironmentModel, type: string) {
+    return `${env.id}-${type}`;
+  }
+
+  private getSubject(env: EnvironmentModel, type: string) {
+    return this.subjectsPool.find(_subject => {
+      return _subject['key'] === this.generateSubjectKeyName(env, type);
+    });
+  }
+
+  private emitEvent(env: EnvironmentModel, eventType: string, data: any = null) {
+    const subject: Subject<any> = this.getSubject(env, eventType)['subject'];
+    subject.next(data);
   }
 
   private bindeEvents(env: EnvironmentModel, childProcess: ChildProcess) {
@@ -22,17 +37,14 @@ export class EnvironmentService {
 
     childProcess.on('error', function(err) {
       self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE, err.message);
-      self.emitLogChangeEvent();
     });
 
     childProcess.stdout.on('data', function (data) {
       self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
-      self.emitLogChangeEvent();
     });
 
     childProcess.stderr.on('data', function (data) {
       self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
-      self.emitLogChangeEvent();
     });
 
     childProcess.on('close', function (code) {
@@ -43,16 +55,11 @@ export class EnvironmentService {
     });
   }
 
-  private emitLogChangeEvent() {
-    this.logChanged.next('CHANGED');
-    console.log('Emitted');
-  }
-
   changeEnvironmentStatus(env, pid, status) {
     env.pid    = pid;
     env.status = status;
     this.databaseService.updateEnvironment(env);
-    this.envChanged.next(env);
+    this.emitEvent(env, SUBJECT_TYPE.ENV_CHANGED_TYPE, env);
     return env;
   }
 
@@ -70,9 +77,10 @@ export class EnvironmentService {
     const isKilled = await isActuallyKilled(env.pid);
 
     if (killed || isKilled) {
+      this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now stopped.`);
       this.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
     } else {
-      console.log('Could not kill the process, please try closing it manually.', env.pid);
+      this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Could not kill the process, please try closing it manually, PID: ${env.pid}`);
     }
 
     return env;
@@ -83,14 +91,18 @@ export class EnvironmentService {
       cwd: env.path
     });
 
+    this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now running`);
     this.changeEnvironmentStatus(env, childProcess.pid, ENVIRONMENT_STATUS.RUNNING);
     this.bindeEvents(env, childProcess);
 
     return childProcess;
   }
 
-  bindListeners(envChanged: Subject<EnvironmentModel>, logChanged: Subject<any>) {
-    this.envChanged     = envChanged;
-    this.logChanged     = logChanged;
+  addListener(env: EnvironmentModel, type: string, _subject: Subject<any>) {
+    const subject = {
+      key: this.generateSubjectKeyName(env, type),
+      subject: _subject
+    };
+    this.subjectsPool.push(subject);
   }
 }

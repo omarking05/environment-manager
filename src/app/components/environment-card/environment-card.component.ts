@@ -1,3 +1,4 @@
+import { SUBJECT_TYPE } from './../../model/subject-type';
 import { EnvironmentModel } from './../../model/environment.model';
 import { arrayBufferToString } from './../../utils/helper.util';
 import { ENVIRONMENT_DATA } from './../../model/environment-data';
@@ -7,6 +8,7 @@ import { DatabaseService } from './../../providers/database.service';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ChildProcess } from 'child_process';
 import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-environment-card',
@@ -21,19 +23,26 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
   @Output() stop: EventEmitter<any> = new EventEmitter<any>();
 
   envChanged: Subject<EnvironmentModel> = new Subject();
-  logChanged: Subject<any> = new Subject();
+  messageNotifier: Subject<any> = new Subject();
 
   childProcess: ChildProcess  = null;
   lastNLinesOfLog               = '';
 
   constructor(
     private databaseService: DatabaseService,
-    private environmentService: EnvironmentService
+    private environmentService: EnvironmentService,
+    private _snackBar: MatSnackBar
   ) { }
 
   private _subscribeToEvents() {
-    this.environmentService.bindListeners(this.envChanged, this.logChanged);
+    this.environmentService.addListener(this.env, SUBJECT_TYPE.ENV_CHANGED_TYPE, this.envChanged);
+    this.environmentService.addListener(this.env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, this.messageNotifier);
+
     this.envChanged.subscribe(env => {
+      // In case this is not the environment that is updated
+      if (this.env.id !== env.id) {
+        return;
+      }
       // setTimeout is a workaround in case process is finished too fast
       // Then state will change rapidly, in such a way angular will not detect it
       setTimeout(() => {
@@ -41,15 +50,18 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
       }, 0);
     });
 
-    this.logChanged.subscribe(changed => {
-      console.log(changed);
-      this.lastNLinesOfLog = '\n' + this.databaseService.getLastNLinesOfLogFile(this.env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, 10);
+    this.messageNotifier.subscribe(newMessage => {
+      this.showMessage(newMessage);
     });
   }
 
-  private _unsubscribeToEvents(){
+  private showMessage(message) {
+    this._snackBar.open(message, 'close');
+  }
+
+  private _unsubscribeToEvents() {
     this.envChanged.unsubscribe();
-    this.logChanged.unsubscribe();
+    this.messageNotifier.unsubscribe();
   }
 
   ngOnInit() {
