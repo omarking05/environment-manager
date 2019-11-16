@@ -98,7 +98,28 @@ export class EnvironmentService {
     return childProcess;
   }
 
+  readEnvironmentLogs(env: EnvironmentModel) {
+    this.databaseService.tailEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE).on('line', (data: string) => {
+      this.emitEvent(env, SUBJECT_TYPE.READ_LOGS_TYPE, data);
+    });
+  }
+
+  private listenerExists(env: EnvironmentModel, type: string) {
+    const found = this.subjectsPool.find(_subject => {
+      return _subject.key === this.generateSubjectKeyName(env, type);
+    });
+    return found;
+  }
+
+  private removeExistingListener(env:EnvironmentModel, type: string) {
+    this.subjectsPool = this.subjectsPool.filter(_subject => {
+      return _subject.key !== this.generateSubjectKeyName(env, type);
+    });
+  }
+
   addListener(env: EnvironmentModel, type: string, _subject: Subject<any>) {
+    this.removeExistingListener(env, type);
+    
     const subject = {
       key: this.generateSubjectKeyName(env, type),
       subject: _subject

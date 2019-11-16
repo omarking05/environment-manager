@@ -5,4 +5,5 @@ export interface EnvironmentModel {
   command: string;
   status: string;
   pid: number;
+  logFile: string;
 }

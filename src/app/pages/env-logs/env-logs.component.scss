@@ -1,0 +1,26 @@
+:host {
+  .mrgeek-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .mrgeek-env-last-n-lines{ 
+    background-color: #5f5f5f;
+    overflow: auto;
+    padding: 1em;
+    max-height: 500px;
+  }
+
+  mat-card-header {
+    margin-bottom: 5px;
+  }
+
+  code {
+    height: auto;
+    max-height: 200px;
+    white-space: pre-line;
+    white-space: -moz-pre-line;
+    white-space: -pre-line;
+    white-space: -o-pre-line;
+    word-wrap: break-word;
+  }
+}

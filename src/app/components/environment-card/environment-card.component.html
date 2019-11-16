@@ -4,18 +4,32 @@
     <mat-card-title>{{ env.name }}</mat-card-title>
     <mat-card-subtitle>{{ env.id }}</mat-card-subtitle>
     <mat-card-subtitle>{{ env.path }}</mat-card-subtitle>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="action menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="_showLogs()">
+        <mat-icon>speaker_notes</mat-icon>
+        <span>Show Logs</span>
+      </button>
+      <button mat-menu-item (click)="_update()">
+        <mat-icon>build</mat-icon>
+        <span>Update</span>
+      </button>
+      <button mat-menu-item (click)="_remove()">
+        <mat-icon>delete</mat-icon>
+        <span>Remove</span>
+      </button>
+    </mat-menu>
   </mat-card-header>
   <mat-card-content>
-    <span *ngIf="isRunning()">Running on PID: {{ env.pid }}</span>
-    <div class="mrgeek-env-last-n-lines">
-      <code>
-        {{lastNLinesOfLog}}
+    <!-- <div class="mrgeek-env-last-n-lines">
+      <code [innerHTML]="lastNLinesOfLog">
       </code>
-    </div>
+    </div> -->
   </mat-card-content>
-    <mat-card-actions>
-      <button *ngIf="!isRunning()" mat-button color="primary" (click)="_run()">RUN</button>
-      <button *ngIf="isRunning()" mat-button color="accent" (click)="_stop()">STOP</button>
-      <button mat-button color="warn" (click)="_remove()">REMOVE</button>
+  <mat-card-actions>
+    <button *ngIf="!isRunning()" mat-flat-button color="primary" (click)="_run()">RUN</button>
+    <button *ngIf="isRunning()" mat-flat-button color="accent" (click)="_stop()">STOP</button>
   </mat-card-actions>
 </mat-card>

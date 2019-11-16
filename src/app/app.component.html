@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container class="mrgeek-sidenav-container" fullscreen [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary" class="mrgeek-toolbar">
+      <span>Environments Manager</span>
+      <span class="mrgeek-spacer"></span>
+
+      <button mat-icon-button aria-label="Add environment" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

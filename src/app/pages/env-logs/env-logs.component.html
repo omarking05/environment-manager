@@ -1,0 +1,17 @@
+<mat-card class="mrgeek-card">
+  <mat-card-header>
+    <mat-card-title>{{ env.name }}</mat-card-title>
+    <mat-card-subtitle>ID: {{ env.id }}</mat-card-subtitle>
+    <mat-card-subtitle>Path: {{ env.path }}</mat-card-subtitle>
+    <mat-card-subtitle>Log File: {{ env.logFile }}</mat-card-subtitle>
+    <span class="mrgeek-spacer"></span>
+    <button mat-flat-button color="primary" (click)="_showEnvironments()">Back</button>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="mrgeek-env-last-n-lines" #scrollMe>
+      <code [innerHTML]="logs">
+      </code>
+    </div>
+  </mat-card-content>
+</mat-card>

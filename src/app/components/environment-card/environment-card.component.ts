@@ -5,17 +5,18 @@ import { ENVIRONMENT_DATA } from './../../model/environment-data';
 import { EnvironmentService } from './../../providers/environment.service';
 import { ENVIRONMENT_STATUS } from './../../model/environment-status';
 import { DatabaseService } from './../../providers/database.service';
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChildProcess } from 'child_process';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-environment-card',
   templateUrl: './environment-card.component.html',
   styleUrls: ['./environment-card.component.scss']
 })
-export class EnvironmentCardComponent implements OnInit, OnDestroy {
+export class EnvironmentCardComponent implements OnInit {
   @Input() env: EnvironmentModel;
   @Output() remove: EventEmitter<any> = new EventEmitter<any>();
   @Output() update: EventEmitter<any> = new EventEmitter<any>();
@@ -26,12 +27,13 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
   messageNotifier: Subject<any> = new Subject();
 
   childProcess: ChildProcess  = null;
-  lastNLinesOfLog               = '';
+  // lastNLinesOfLog               = '';
 
   constructor(
     private databaseService: DatabaseService,
     private environmentService: EnvironmentService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) { }
 
   private _subscribeToEvents() {
@@ -65,12 +67,7 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.lastNLinesOfLog = '\n' + this.databaseService.getLastNLinesOfLogFile(this.env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, 10);
     this._subscribeToEvents();
-  }
-
-  ngOnDestroy() {
-    this._unsubscribeToEvents();
   }
 
   _run() {
@@ -94,5 +91,9 @@ export class EnvironmentCardComponent implements OnInit, OnDestroy {
   _remove() {
     this.databaseService.removeEnvironment(this.env);
     this.remove.emit(this.env);
+  }
+
+  _showLogs() {
+    this._router.navigate(['logs', this.env.id]);
   }
 }
