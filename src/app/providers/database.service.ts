@@ -107,6 +107,7 @@ export class DatabaseService {
   }
 
   updateEnvironment(_newEnv: EnvironmentModel) {
+    console.log('Updating env', _newEnv);
     this.environments = this.environments.map((_env: EnvironmentModel) => {
       if (_env.id === _newEnv.id) {
         return _newEnv;

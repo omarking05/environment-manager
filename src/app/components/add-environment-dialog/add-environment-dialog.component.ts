@@ -16,8 +16,8 @@ export class AddEnvironmentDialogComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddEnvironmentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EnvironmentModel
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -25,16 +25,21 @@ export class AddEnvironmentDialogComponent implements OnInit {
 
   initForm() {
     this.addEnvForm = this._formBuilder.group({
-      id: [''],
-      name: ['', Validators.required],
-      path: ['', Validators.required],
-      command: ['', Validators.required]
+      id: [this.data.env ? this.data.env.id : ''],
+      logFile: [this.data.env ? this.data.env.logFile : ''],
+      pid: [this.data.env ? this.data.env.pid : ''],
+      status: [this.data.env ? this.data.env.status : ''],
+      name: [this.data.env ? this.data.env.name : '', Validators.required],
+      path: [this.data.env ? this.data.env.path : '', Validators.required],
+      command: [this.data.env ? this.data.env.command : '', Validators.required]
     });
   }
 
   submitForm() {
     if (this.addEnvForm.valid) {
-      this.generateRandomeId();
+      if (!this.data.edit) {
+        this.generateRandomeId();
+      }
       return this.dialogRef.close(this.addEnvForm.value);
     }
   }

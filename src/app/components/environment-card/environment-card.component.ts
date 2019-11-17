@@ -10,6 +10,8 @@ import { ChildProcess } from 'child_process';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEnvironmentDialogComponent } from '../add-environment-dialog/add-environment-dialog.component';
 
 @Component({
   selector: 'app-environment-card',
@@ -27,13 +29,13 @@ export class EnvironmentCardComponent implements OnInit {
   messageNotifier: Subject<any> = new Subject();
 
   childProcess: ChildProcess  = null;
-  // lastNLinesOfLog               = '';
 
   constructor(
     private databaseService: DatabaseService,
     private environmentService: EnvironmentService,
     private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    public dialog: MatDialog
   ) { }
 
   private _subscribeToEvents() {
@@ -86,7 +88,28 @@ export class EnvironmentCardComponent implements OnInit {
     this.stop.emit(this.env);
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AddEnvironmentDialogComponent, {
+      width: '50%',
+      data: {
+        edit: true,
+        env: this.env
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((env: EnvironmentModel) => {
+      // In case of user close dialog without filling the data
+      // data will be null
+      if (!env) {
+        return;
+      }
+      this.env = env;
+      this.databaseService.updateEnvironment(env);
+    });
+  }
+
   _update() {
+    this.openDialog();
     this.update.emit(this.env);
   }
 

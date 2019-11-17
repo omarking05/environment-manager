@@ -1,5 +1,6 @@
 <div [formGroup]="addEnvForm">
-  <h1 mat-dialog-title>Add new environment</h1>
+  <h1 mat-dialog-title *ngIf="data.edit">Update environment</h1>
+  <h1 mat-dialog-title *ngIf="!data.edit">Add new environment</h1>
 
   <div mat-dialog-content>
     <div>
@@ -30,6 +31,6 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button (click)="submitForm()" cdkFocusInitial>Add</button>
+    <button mat-button (click)="submitForm()" cdkFocusInitial>{{ data.edit ? 'Update' : 'Add' }}</button>
   </div>
 </div>
