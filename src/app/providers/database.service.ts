@@ -64,6 +64,10 @@ export class DatabaseService {
     this.updateEnvironment(env);
   }
 
+  private getLogFilePath(env: EnvironmentModel, type: string) {
+    return this.electronService.path.join(this.electronService.eApp.getPath('userData'), this.generateLogFileName(env, type));
+  }
+
   writeEnvironmentLogs(env: EnvironmentModel, type: string, data: string) {
     if (data === '') {
       return;
@@ -74,7 +78,7 @@ export class DatabaseService {
   }
 
   tailEnvironmentLogs(env: EnvironmentModel, type: string) {
-    const logPath = this.electronService.path.join(this.electronService.eApp.getPath('userData'), this.generateLogFileName(env, type));
+    const logPath = this.getLogFilePath(env, type);
     return new Tail(logPath, {
       follow: true,
       lines: 100
@@ -87,7 +91,16 @@ export class DatabaseService {
     return this;
   }
 
+  removeLogFiles(env: EnvironmentModel) {
+    const stdLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE);
+    const errLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE);
+    this.electronService.fs.unlinkSync(stdLogFilePath);
+    this.electronService.fs.unlinkSync(errLogFilePath);
+  }
+
   removeEnvironment(env: EnvironmentModel) {
+    // First remove log files
+    this.removeLogFiles(env);
     this.environments = this.environments.filter(_env => _env !== env);
     this.flushData(DatabaseService.ENVIRONMENTS);
     return this;
