@@ -38,6 +38,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { AddEnvironmentDialogComponent } from './components/add-environment-dialog/add-environment-dialog.component';
 import { EnvironmentCardComponent } from './components/environment-card/environment-card.component';
 import { EnvLogsComponent } from './pages/env-logs/env-logs.component';
+import { AvatarModule } from 'ngx-avatar';
 
 
 // AoT requires an exported function for factories
@@ -55,6 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EnvLogsComponent
   ],
   imports: [
+    AvatarModule,
     MatMenuModule,
     MatSnackBarModule,
     ReactiveFormsModule,

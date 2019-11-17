@@ -1,6 +1,6 @@
 <mat-card class="mrgeek-card">
   <mat-card-header>
-    <div mat-card-avatar class="mrgeek-header-image"></div>
+    <ngx-avatar mat-card-avatar class="mrgeek-header-image" [name]="env.name"></ngx-avatar>
     <mat-card-title>{{ env.name }}</mat-card-title>
     <mat-card-subtitle>{{ env.id }}</mat-card-subtitle>
     <mat-card-subtitle>{{ env.path }}</mat-card-subtitle>
