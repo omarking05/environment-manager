@@ -60,6 +60,8 @@ export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.logs += '\n' + data;
       });
       this._ref.detectChanges();
+    }, (err) => {
+      console.log('Error occurred..');
     });
   }
 

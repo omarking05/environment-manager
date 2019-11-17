@@ -29,7 +29,10 @@ export class EnvironmentService {
 
   private emitEvent(env: EnvironmentModel, eventType: string, data: any = null) {
     const subject: Subject<any> = this.getSubject(env, eventType)['subject'];
-    subject.next(data);
+    // Only broadcast event, if we have observers
+    if (subject.observers) {
+      subject.next(data);
+    }
   }
 
   private bindeEvents(env: EnvironmentModel, childProcess: ChildProcess) {
@@ -75,6 +78,9 @@ export class EnvironmentService {
 
     const killed = forceKillProcess(env.pid);
     const isKilled = await isActuallyKilled(env.pid);
+
+    console.log('Process Killed?', killed);
+    console.log('Process isKilled?', isKilled);
 
     if (killed || isKilled) {
       this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now stopped.`);
