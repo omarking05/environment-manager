@@ -51,6 +51,7 @@ export class DatabaseService {
   private getEnvironmentLogStore(env: EnvironmentModel, type: string) {
     log.transports.file.fileName  = this.generateLogFileName(env, type);
     log.transports.console.format = '';
+    log.transports.console.level = false;
     return log;
   }
 
