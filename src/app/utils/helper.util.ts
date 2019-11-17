@@ -13,7 +13,7 @@ const _psLookupPromiseWrapper = (pid) => {
 
 const _psKillPromisWrapper = (pid) => {
   return new Promise((resolve, reject) => {
-    ps.kill({pid: pid}, (err) => {
+    ps.kill(pid, 'SIGKILL', (err) => {
       if (err) {
         reject(err);
       }
@@ -30,6 +30,10 @@ export const arrayBufferToString = (arr) => {
 };
 
 export const isActuallyKilled = async (pid) => {
+  if (!pid) {
+    return true;
+  }
+
   try {
     const processes: any  = await _psLookupPromiseWrapper(pid);
     const childProcess    = processes.length > 0 ? processes[0] : null;

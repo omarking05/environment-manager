@@ -76,11 +76,8 @@ export class EnvironmentService {
       childProcess.kill();
     }
 
-    const killed = forceKillProcess(env.pid);
+    const killed   = await forceKillProcess(env.pid);
     const isKilled = await isActuallyKilled(env.pid);
-
-    console.log('Process Killed?', killed);
-    console.log('Process isKilled?', isKilled);
 
     if (killed || isKilled) {
       this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now stopped.`);
@@ -93,8 +90,11 @@ export class EnvironmentService {
   }
 
   runEnvironment(env: EnvironmentModel) {
-    const childProcess  = this.electronService.childProcess.exec(env.command, {
-      cwd: env.path
+    const commandSplitted = env.command.split(' ');
+    const mainCommand     = commandSplitted.shift();
+    const childProcess    = this.electronService.childProcess.spawn(mainCommand, commandSplitted, {
+      cwd: env.path,
+      detached: true
     });
 
     this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now running`);

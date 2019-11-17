@@ -58,7 +58,9 @@ export class EnvironmentCardComponent implements OnInit {
   }
 
   private showMessage(message) {
-    this._snackBar.open(message, 'close');
+    this._snackBar.open(message, 'close', {
+      duration: 3000
+    });
   }
 
   private _unsubscribeToEvents() {
