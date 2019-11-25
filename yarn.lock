@@ -3571,6 +3571,14 @@ fs-extra@^8.1.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
+fs-jetpack@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/fs-jetpack/-/fs-jetpack-2.2.3.tgz#75113dcf1e4a9c7c7275732f2b7305656df114c8"
+  integrity sha512-MldfoKMz2NwpvP3UFfVXLp4NCncy9yxGamgBK6hofFaisnWoGvgkAyTtKwcq++leztgZuM4ywrZEaUtiyVfWgA==
+  dependencies:
+    minimatch "^3.0.2"
+    rimraf "^2.6.3"
+
 fs-minipass@^1.2.5:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/fs-minipass/-/fs-minipass-1.2.7.tgz#ccff8570841e7fe4265693da88936c55aed7f7c7"

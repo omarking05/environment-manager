@@ -23,7 +23,7 @@ const _psKillPromisWrapper = (pid) => {
 };
 
 export const arrayBufferToString = (arr) => {
-  if (!(arr instanceof ArrayBuffer)) {
+  if (!(arr instanceof Uint8Array)) {
     return arr;
   }
   return (new TextDecoder('utf-8')).decode(arr);

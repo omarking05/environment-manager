@@ -1,3 +1,4 @@
+import { EnvironmentStoreService } from './providers/environment-store.service';
 import { EnvironmentService } from './providers/environment.service';
 import 'reflect-metadata';
 import '../polyfills';
@@ -83,7 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, DatabaseService, EnvironmentService],
+  providers: [ElectronService, DatabaseService, EnvironmentService, EnvironmentStoreService],
   bootstrap: [AppComponent],
   entryComponents: [
     AddEnvironmentDialogComponent

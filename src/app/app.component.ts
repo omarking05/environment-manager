@@ -2,7 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EnvironmentModel } from './model/environment.model';
 import { AddEnvironmentDialogComponent } from './components/add-environment-dialog/add-environment-dialog.component';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
@@ -25,6 +25,7 @@ export class AppComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     public dialog: MatDialog,
+    private _ngZone: NgZone,
     public databaseService: DatabaseService,
   ) {
 
@@ -42,6 +43,12 @@ export class AppComponent implements OnDestroy {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.which === 123) {
+        this.electronService.remote.getCurrentWindow().webContents.openDevTools();
+      }
+    });
   }
 
   _addNewEnvironment(env: EnvironmentModel) {

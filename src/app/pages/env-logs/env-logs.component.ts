@@ -1,6 +1,5 @@
 import { SUBJECT_TYPE } from './../../model/subject-type';
 import { Subject } from 'rxjs';
-import { ENVIRONMENT_DATA } from './../../model/environment-data';
 import { EnvironmentService } from './../../providers/environment.service';
 import { DatabaseService } from './../../providers/database.service';
 import { EnvironmentModel } from './../../model/environment.model';

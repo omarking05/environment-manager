@@ -33,7 +33,7 @@ function createWindow() {
   }
 
   // Uncomment this one for openning inspection
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {

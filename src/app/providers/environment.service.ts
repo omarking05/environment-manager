@@ -1,3 +1,4 @@
+import { EnvironmentStoreService } from './environment-store.service';
 import { SUBJECT_TYPE } from './../model/subject-type';
 import { ENVIRONMENT_DATA } from './../model/environment-data';
 import { arrayBufferToString, isActuallyKilled, forceKillProcess } from './../utils/helper.util';
@@ -14,7 +15,11 @@ export class EnvironmentService {
 
   subjectsPool = [];
 
-  constructor(public electronService: ElectronService, public databaseService: DatabaseService) {
+  constructor(
+    public electronService: ElectronService,
+    public databaseService: DatabaseService,
+    public environmentStoreService: EnvironmentStoreService
+  ) {
   }
 
   private generateSubjectKeyName(env: EnvironmentModel, type: string) {
@@ -35,23 +40,23 @@ export class EnvironmentService {
     }
   }
 
-  private bindeEvents(env: EnvironmentModel, childProcess: ChildProcess) {
+  private bindEvents(env: EnvironmentModel, childProcess: ChildProcess) {
     const self        = this;
 
     childProcess.on('error', function(err) {
-      self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE, err.message);
+      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE, err.message);
     });
 
     childProcess.stdout.on('data', function (data) {
-      self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
+      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
     });
 
     childProcess.stderr.on('data', function (data) {
-      self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
+      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
     });
 
     childProcess.on('close', function (code) {
-      self.databaseService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
+      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
         `Environment finished with code ${code}`
       );
       self.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
@@ -99,13 +104,13 @@ export class EnvironmentService {
 
     this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) is now running`);
     this.changeEnvironmentStatus(env, childProcess.pid, ENVIRONMENT_STATUS.RUNNING);
-    this.bindeEvents(env, childProcess);
+    this.bindEvents(env, childProcess);
 
     return childProcess;
   }
 
   readEnvironmentLogs(env: EnvironmentModel) {
-    this.databaseService.tailEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE).on('line', (data: string) => {
+    this.environmentStoreService.tailEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE).on('line', (data: string) => {
       this.emitEvent(env, SUBJECT_TYPE.READ_LOGS_TYPE, data);
     });
   }
@@ -125,7 +130,6 @@ export class EnvironmentService {
 
   addListener(env: EnvironmentModel, type: string, _subject: Subject<any>) {
     this.removeExistingListener(env, type);
-    
     const subject = {
       key: this.generateSubjectKeyName(env, type),
       subject: _subject

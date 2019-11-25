@@ -1,11 +1,8 @@
-import { ENVIRONMENT_DATA } from './../model/environment-data';
+import { EnvironmentStoreService } from './environment-store.service';
 import { EnvironmentModel } from './../model/environment.model';
 import ElectronStore from 'electron-store';
 import { Injectable } from '@angular/core';
-
 import { ElectronService } from './electron.service';
-import * as Tail from 'node.tail';
-import log, { IElectronLog } from 'electron-log';
 
 const MAIN_DB_FILE_NAME = 'mrgeek-env-management';
 
@@ -15,7 +12,6 @@ export class DatabaseService {
 
   environments = [];
 
-  log: IElectronLog;
   store: ElectronStore;
   storeConfig: ElectronStore.Options<any> = {
     name: MAIN_DB_FILE_NAME,
@@ -27,7 +23,7 @@ export class DatabaseService {
     }
   };
 
-  constructor(public electronService: ElectronService) {
+  constructor(public electronService: ElectronService, public environmentStoreService: EnvironmentStoreService) {
     this.initDatabase();
     this.loadData();
   }
@@ -44,45 +40,13 @@ export class DatabaseService {
     this.store.set(key, this[key]);
   }
 
-  private generateLogFileName(env: EnvironmentModel, type: string) {
-    return `${env.name.replace(' ', '_').toLowerCase()}-${env.id}-${type}.log`;
-  }
-
-  private getEnvironmentLogStore(env: EnvironmentModel, type: string) {
-    log.transports.file.fileName  = this.generateLogFileName(env, type);
-    log.transports.console.format = '';
-    log.transports.console.level = false;
-    return log;
-  }
-
-  private addlogFileToEnv(env: EnvironmentModel, logFile: string) {
+  public addlogFileToEnv(env: EnvironmentModel, logFilePath: string) {
     // Environment already has log file path saved
-    if (env.logFile && env.logFile !== '' && env.logFile === logFile) {
+    if (env.logFile && env.logFile !== '' && env.logFile === logFilePath) {
       return;
     }
-    env.logFile = log.transports.file.fileName;
+    env.logFile = logFilePath;
     this.updateEnvironment(env);
-  }
-
-  private getLogFilePath(env: EnvironmentModel, type: string) {
-    return this.electronService.path.join(this.electronService.eApp.getPath('userData'), this.generateLogFileName(env, type));
-  }
-
-  writeEnvironmentLogs(env: EnvironmentModel, type: string, data: string) {
-    if (data === '') {
-      return;
-    }
-    const logStore  = this.getEnvironmentLogStore(env, type);
-    this.addlogFileToEnv(env, logStore.transports.file.fileName);
-    logStore.info(data);
-  }
-
-  tailEnvironmentLogs(env: EnvironmentModel, type: string) {
-    const logPath = this.getLogFilePath(env, type);
-    return new Tail(logPath, {
-      follow: true,
-      lines: 100
-    });
   }
 
   addEnvironment(env: EnvironmentModel) {
@@ -91,23 +55,15 @@ export class DatabaseService {
     return this;
   }
 
-  removeLogFiles(env: EnvironmentModel) {
-    const stdLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE);
-    const errLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE);
-    this.electronService.fs.unlinkSync(stdLogFilePath);
-    this.electronService.fs.unlinkSync(errLogFilePath);
-  }
-
   removeEnvironment(env: EnvironmentModel) {
     // First remove log files
-    this.removeLogFiles(env);
+    this.environmentStoreService.removeLogFiles(env);
     this.environments = this.environments.filter(_env => _env !== env);
     this.flushData(DatabaseService.ENVIRONMENTS);
     return this;
   }
 
   updateEnvironment(_newEnv: EnvironmentModel) {
-    console.log('Updating env', _newEnv);
     this.environments = this.environments.map((_env: EnvironmentModel) => {
       if (_env.id === _newEnv.id) {
         return _newEnv;
