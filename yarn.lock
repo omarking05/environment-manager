@@ -703,6 +703,13 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+angular-resizable-element@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/angular-resizable-element/-/angular-resizable-element-3.2.6.tgz#1df9b14853691e00b99c74492e729b7a35cf70a0"
+  integrity sha512-8vp5w4YFIrZ2M8EmGpIt/yMwLBjkUJe7aPLPxDDQhi5HQWF0HLJ6lb4tXgEzW572roxNnHFg105EM6XGAMZDIg==
+  dependencies:
+    tslib "^1.9.0"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -5838,6 +5845,16 @@ neo-async@^2.5.0, neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
+ng-terminal@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/ng-terminal/-/ng-terminal-2.3.0.tgz#697777d452980c269dce06d8755b8937390e5282"
+  integrity sha512-jgixyMo5kyu4CgqAJG9nZrlnQ0V03snlf+tpR4uW+sA5UF0Bek+oUw3qtgT2jGNu+tzFRBPJsWPE8i6OqIIp5Q==
+  dependencies:
+    angular-resizable-element "^3.2.6"
+    tslib "^1.9.0"
+    xterm "^4.2.0"
+    xterm-addon-fit "^0.3.0"
+
 ngx-avatar@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/ngx-avatar/-/ngx-avatar-3.7.0.tgz#43857ad017af42ed0ba26d0dafc45948285a8af7"
@@ -9252,6 +9269,16 @@ xtend@~2.1.1:
   integrity sha1-bv7MKk2tjmlixJAbM3znuoe10os=
   dependencies:
     object-keys "~0.4.0"
+
+xterm-addon-fit@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/xterm-addon-fit/-/xterm-addon-fit-0.3.0.tgz#341710741027de9d648a9f84415a01ddfdbbe715"
+  integrity sha512-kvkiqHVrnMXgyCH9Xn0BOBJ7XaWC/4BgpSWQy3SueqximgW630t/QOankgqkvk11iTOCwWdAY9DTyQBXUMN3lw==
+
+xterm@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.2.0.tgz#b9980b2ae18c64ed31bcc95eace3bcecffebbbd9"
+  integrity sha512-oNfLqt+LmghLPOt5UcskP5Km1fXpTBHsTZ99nxJKY2N0MNFXBKIVXUcNNhHCa74JGZFMGhLT58A/UN3HcPXSfg==
 
 y18n@^3.2.1:
   version "3.2.1"

@@ -45,7 +45,7 @@ export class AppComponent implements OnDestroy {
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === '123') {
+      if (e.key === 'F12') {
         this.electronService.remote.getCurrentWindow().webContents.openDevTools();
       }
     });

@@ -32,6 +32,8 @@ function createWindow() {
     }));
   }
 
+  win.maximize();
+
   // Uncomment this one for openning inspection
   // win.webContents.openDevTools();
 

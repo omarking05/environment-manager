@@ -1,11 +1,11 @@
 {
-  "name": "env-manager",
+  "name": "squirrel-it",
   "version": "1.0.0",
   "description": "Multi environment manager for busy developers",
   "homepage": "https://github.com/omarking05/env-manager",
   "author": {
-    "name": "Dale Nguyen",
-    "email": "dungnq@itbox4vn.com"
+    "name": "Omar Ahmed",
+    "email": "omarking05@gmail.com"
   },
   "keywords": [
     "environment",
@@ -47,6 +47,7 @@
     "electron-store": "^5.1.0",
     "fs-jetpack": "^2.2.3",
     "hammerjs": "^2.0.8",
+    "ng-terminal": "^2.3.0",
     "ngx-avatar": "^3.7.0",
     "node.tail": "^0.0.5",
     "ps-node": "^0.1.6",
