@@ -9,7 +9,7 @@ import { DatabaseService } from '../../providers/database.service';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  
+
   environments: EnvironmentModel[] = [];
 
   constructor(

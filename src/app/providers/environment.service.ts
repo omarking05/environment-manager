@@ -122,7 +122,7 @@ export class EnvironmentService {
     return found;
   }
 
-  private removeExistingListener(env:EnvironmentModel, type: string) {
+  private removeExistingListener(env: EnvironmentModel, type: string) {
     this.subjectsPool = this.subjectsPool.filter(_subject => {
       return _subject.key !== this.generateSubjectKeyName(env, type);
     });

@@ -39,14 +39,14 @@ export class EnvironmentStoreService {
     try {
       const stdLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE);
       jetpack.remove(stdLogFilePath);
-    } catch(e) {
+    } catch (e) {
       console.log('File does not exist');
     }
 
     try {
       const errLogFilePath = this.getLogFilePath(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE);
       jetpack.remove(errLogFilePath);
-    } catch(e) {
+    } catch (e) {
       console.log('File does not exist');
     }
   }
