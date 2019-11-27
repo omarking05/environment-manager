@@ -56,8 +56,20 @@ export class EnvironmentService {
     });
 
     childProcess.on('close', function (code) {
+      // In case env closed on its own, not force closed
+      if (null !== code) {
+        self.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) has finished.`);
+      }
+
       self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
         `Environment finished with code ${code}`
+      );
+      self.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
+    });
+
+    childProcess.on('exit', function(code) {
+      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
+        `Environment exited with code ${code}`
       );
       self.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
     });

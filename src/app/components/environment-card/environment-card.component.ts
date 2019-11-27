@@ -55,7 +55,9 @@ export class EnvironmentCardComponent implements OnInit {
     });
 
     this.messageNotifier.subscribe(newMessage => {
-      this.showMessage(newMessage);
+      setTimeout(() => {
+        this.showMessage(newMessage);
+      }, 0);
     });
   }
 
