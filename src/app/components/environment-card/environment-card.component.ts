@@ -62,8 +62,15 @@ export class EnvironmentCardComponent implements OnInit {
   }
 
   private showMessage(message) {
-    this._snackBar.open(message, 'close', {
-      duration: 3000
+    const hasFocus = document.hasFocus();
+    if (hasFocus) {
+      return this._snackBar.open(message, 'close', {
+        duration: 3000
+      });
+    }
+
+    return new Notification('Squirrel It', {
+      body: message
     });
   }
 
