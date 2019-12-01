@@ -74,6 +74,10 @@ export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   scrollToBottom(): void {
     try {
+      if (!this.myScrollContainer) {
+        return;
+      }
+      
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     } catch (err) {
       console.log('Error', err);
