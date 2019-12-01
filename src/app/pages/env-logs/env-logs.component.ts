@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
 
-  @ViewChild('scrollMe', { static: true }) private myScrollContainer: ElementRef;
+  @ViewChild('scrollMe', { static: false }) private myScrollContainer: ElementRef;
 
   readLog: Subject<any> = new Subject();
   envId: string;
