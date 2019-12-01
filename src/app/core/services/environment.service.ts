@@ -41,37 +41,37 @@ export class EnvironmentService {
   }
 
   private bindEvents(env: EnvironmentModel, childProcess: ChildProcess) {
-    const self        = this;
+    // const self        = this;
 
-    childProcess.on('error', function(err) {
-      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE, err.message);
+    childProcess.on('error', (err) => {
+      this.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_ERR_TYPE, err.message);
     });
 
-    childProcess.stdout.on('data', function (data) {
-      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
+    childProcess.stdout.on('data', (data) => {
+      this.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
     });
 
-    childProcess.stderr.on('data', function (data) {
-      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
+    childProcess.stderr.on('data', (data) => {
+      this.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE, arrayBufferToString(data));
     });
 
-    childProcess.on('close', function (code) {
+    childProcess.on('close', (code) => {
       // In case env closed on its own, not force closed
       if (null !== code) {
-        self.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) has finished.`);
+        this.emitEvent(env, SUBJECT_TYPE.MESSAGE_NOTIFIER_TYPE, `Environment (${env.name}) has finished.`);
       }
 
-      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
+      this.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
         `Environment finished with code ${code}`
       );
-      self.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
+      this.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
     });
 
-    childProcess.on('exit', function(code) {
-      self.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
+    childProcess.on('exit', (code) => {
+      this.environmentStoreService.writeEnvironmentLogs(env, ENVIRONMENT_DATA.LOG_FILE_STD_TYPE,
         `Environment exited with code ${code}`
       );
-      self.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
+      this.changeEnvironmentStatus(env, null, ENVIRONMENT_STATUS.STOPPED);
     });
   }
 
