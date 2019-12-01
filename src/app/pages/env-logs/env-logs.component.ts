@@ -29,7 +29,7 @@ export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
     private _ref: ChangeDetectorRef,
     private _ngZone: NgZone
   ) {
-    _route.params.subscribe(params => {
+    this._route.params.subscribe(params => {
       this.envId = params.id;
     });
   }
