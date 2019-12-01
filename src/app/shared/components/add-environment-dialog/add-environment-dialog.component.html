@@ -1,0 +1,36 @@
+<div [formGroup]="addEnvForm">
+  <h1 mat-dialog-title *ngIf="data.edit">Update environment</h1>
+  <h1 mat-dialog-title *ngIf="!data.edit">Add new environment</h1>
+
+  <div mat-dialog-content>
+    <div>
+      <mat-form-field class="mrgeek-input-full-width">
+        <mat-label>Environment Name</mat-label>
+        <input matInput placeholder="Amazing API" formControlName="name" required>
+        <mat-error *ngIf="addEnvForm.get('name').invalid">Name is required</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div>
+      <mat-form-field class="mrgeek-input-full-width">
+        <mat-label>Environment Path</mat-label>
+        <input matInput placeholder="/some/another/cool/path" formControlName="path" required>
+        <mat-error *ngIf="addEnvForm.get('path').invalid">Path is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="mrgeek-input-full-width">
+        <mat-label>Environment Command</mat-label>
+        <input matInput placeholder="yarn run amazing:api" formControlName="command" required>
+        <mat-error *ngIf="addEnvForm.get('command').invalid">Command is required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="submitForm()" cdkFocusInitial>{{ data.edit ? 'Update' : 'Add' }}</button>
+  </div>
+</div>

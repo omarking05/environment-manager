@@ -4,7 +4,7 @@ import * as url from 'url';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
-    serve = args.some(val => val === '--serve');
+      serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
 
@@ -22,6 +22,23 @@ function createWindow(): BrowserWindow {
       allowRunningInsecureContent: (serve) ? true : false,
     },
   });
+
+  const gotTheLock = app.requestSingleInstanceLock();
+
+  if (!gotTheLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (win) {
+        if (win.isMinimized()) {
+          win.restore();
+        }
+
+        win.focus();
+      }
+    });
+  }
 
   if (serve) {
     require('electron-reload')(__dirname, {
