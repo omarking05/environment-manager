@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "6.4.0",
-  "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "name": "squirrel-it",
+  "version": "2.0.0",
+  "description": "Multi environment manager for busy developers",
+  "homepage": "https://github.com/omarking05/env-manager",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Omar Ahmed",
+    "email": "omarking05@gmail.com"
   },
   "keywords": [
     "angular",
