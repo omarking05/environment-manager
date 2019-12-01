@@ -1,3 +1,6 @@
+import { EnvironmentStoreService } from './../../core/services/environment-store.service';
+import { DatabaseService } from './../../core/services/database.service';
+import { SharedModule } from './../../shared/shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomePageComponent } from './home-page.component';
@@ -8,7 +11,14 @@ describe('HomePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomePageComponent ]
+      declarations: [ HomePageComponent ],
+      providers: [
+        DatabaseService,
+        EnvironmentStoreService
+      ],
+      imports: [
+        SharedModule
+      ]
     })
     .compileComponents();
   }));

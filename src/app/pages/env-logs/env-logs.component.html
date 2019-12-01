@@ -1,4 +1,4 @@
-<mat-card class="mrgeek-card">
+<mat-card class="mrgeek-card" *ngIf="env">
   <mat-card-header>
     <mat-card-title>{{ env.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ env.id }}</mat-card-subtitle>

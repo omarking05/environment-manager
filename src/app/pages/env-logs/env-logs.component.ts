@@ -48,7 +48,7 @@ export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.getEnvironment();
 
     // In env has no log file, yet
-    if (!this.env.logFile) {
+    if (this.env && !this.env.logFile) {
       return;
     }
 
@@ -80,6 +80,12 @@ export class EnvLogsComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnInit() {
     this.getEnvironment();
+
+    // In case environment is not defined
+    if (!this.env) {
+      return;
+    }
+
     this._subscribeToEvents();
     this.listenToLogs();
     this.scrollToBottom();
