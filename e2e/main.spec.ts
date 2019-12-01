@@ -3,7 +3,7 @@ import {SpectronClient} from 'spectron';
 
 import commonSetup from './common-setup';
 
-describe('angular-electron App', function () {
+describe('squirrel-it App', function () {
   commonSetup.apply(this);
 
   let browser: any;
@@ -14,10 +14,10 @@ describe('angular-electron App', function () {
     browser = client as any;
   });
 
-  it('should display message saying App works !', async function () {
-    const text = await browser.getText('app-home h1');
-    expect(text).to.equal('App works !');
-  });
+  // it('should display message saying App works !', async function () {
+  //   const text = await browser.getText('app-home h1');
+  //   expect(text).to.equal('App works !');
+  // });
 
   it('creates initial windows', async function () {
     const count = await client.getWindowCount();
